@@ -7,7 +7,7 @@
 
 #import "Corvus.h"
 
-#import "RavenClient.h"
+#import "SentryClient.h"
 
 @implementation Corvus
 
@@ -30,37 +30,38 @@ static Corvus *sharedInstance;
 
   if (logMsg) {
 
-    RavenLogLevel ravenLevel = kRavenLogLevelDebug;
+    SentryLog sentryLogLevel = .None;
     switch (logMessage->_flag) {
     case DDLogFlagError:
-      ravenLevel = kRavenLogLevelDebugError;
+      sentryLogLevel = .Error;
       break;
 
     case DDLogFlagWarning:
-      ravenLevel = kRavenLogLevelDebugWarning;
+      sentryLogLevel = .Debug;
       break;
 
     case DDLogFlagInfo:
-      ravenLevel = kRavenLogLevelDebugInfo;
+      sentryLogLevel = .Debug;
       break;
 
     case DDLogFlagDebug:
-      ravenLevel = kRavenLogLevelDebug;
+      sentryLogLevel = .Debug;
       break;
 
     case DDLogFlagVerbose:
-      ravenLevel = kRavenLogLevelDebug;
+      sentryLogLevel = .Debug;
       break;
 
     default:
       break;
     }
 
-    [[RavenClient sharedClient] captureMessage:logMsg
-                                         level:ravenLevel
-                                        method:[logMessage->_function UTF8String]
-                                          file:[logMessage->_fileName UTF8String]
-                                          line:logMessage->_line];
+// TODO switch to building the Event object so we can attach a stacktrace
+    [[SentryClient sharedClient] message:logMsg
+                                   level:sentryLogLevel
+//                                        method:[logMessage->_function UTF8String]
+//                                          file:[logMessage->_fileName UTF8String]
+//                                          line:logMessage->_line];
   }
 }
 

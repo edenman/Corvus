@@ -82,7 +82,7 @@ static Corvus *sharedInstance;
                                  extra:nil
                            fingerprint:nil
                                   user:nil
-                             exception:nil
+                            exceptions:nil
                             stacktrace:stacktrace
                       appleCrashReport:nil];
     [[SentryClient shared] captureEvent:event];
